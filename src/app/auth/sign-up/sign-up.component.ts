@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CreateUserGQL } from 'src/generated-types';
 
 @Component({
   selector: 'app-sign-up',
@@ -7,9 +8,12 @@ import { Component } from '@angular/core';
 })
 export class SignUpComponent {
 
-  constructor() {}
+  constructor(private readonly createUserGql: CreateUserGQL) {}
 
   signUp({email, password}:any) {
     console.log(email, password);
+    this.createUserGql
+      .mutate({createUserData: {email, password}})
+      .subscribe(() => {});
   }
 }
