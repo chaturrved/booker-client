@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { CreateUserGQL } from 'src/generated-types';
+import { Router } from '@angular/router';
+import { CreateUserGQL, CreateUserInput } from 'src/generated-types';
+import { LoginService } from '../login/login.service';
+import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -8,12 +11,22 @@ import { CreateUserGQL } from 'src/generated-types';
 })
 export class SignUpComponent {
 
-  constructor(private readonly createUserGql: CreateUserGQL) {}
+  constructor(
+    private readonly createUserGql: CreateUserGQL,
+    private readonly router: Router,
+    private readonly loginService: LoginService
+  ) {}
 
-  signUp({email, password}:any) {
-    console.log(email, password);
+  signUp(createUserData: CreateUserInput) {
     this.createUserGql
-      .mutate({createUserData: {email, password}})
-      .subscribe(() => {});
+      .mutate({createUserData})
+      .pipe(
+        concatMap(() => {
+          return this.loginService.login(createUserData);
+        })
+      )
+      .subscribe(() => {
+        this.router.navigate(['/']);
+      });
   }
 }

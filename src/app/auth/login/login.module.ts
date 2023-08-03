@@ -12,6 +12,9 @@ import { AuthModule } from '../auth.module';
   imports: [
     CommonModule,
     AuthModule
+  ],
+  exports:[
+    LoginComponent
   ]
 })
 export class LoginModule { }

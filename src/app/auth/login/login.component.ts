@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { LoginService } from './login.service';
+import { Router } from '@angular/router';
+import { CreateUserInput } from 'src/generated-types';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +10,11 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
 
-  constructor() {}
+  constructor(private readonly loginService: LoginService, private readonly router: Router) {}
 
-  login({email,password}:any){
-    console.log(email, password);
+  login(loginUserData: CreateUserInput){
+    this.loginService.login(loginUserData).subscribe(()=>{
+      this.router.navigate(['/']);
+    });
   }
 }
