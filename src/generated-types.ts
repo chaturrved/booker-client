@@ -34,10 +34,19 @@ export type CreateUserInput = {
   password: Scalars['String']['input'];
 };
 
+export type Link = {
+  __typename?: 'Link';
+  images: Array<Scalars['String']['output']>;
+  siteName: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createBookmark: Bookmark;
   createUser: User;
+  updateBookmark: Bookmark;
 };
 
 
@@ -50,15 +59,37 @@ export type MutationCreateUserArgs = {
   createUserData: CreateUserInput;
 };
 
+
+export type MutationUpdateBookmarkArgs = {
+  updateBookmarkData: UpdateBookmarkInput;
+};
+
 export type Query = {
   __typename?: 'Query';
+  bookmark: Bookmark;
   bookmarks: Array<Bookmark>;
+  links: Array<Link>;
   user: User;
+};
+
+
+export type QueryBookmarkArgs = {
+  _id: Scalars['String']['input'];
+};
+
+
+export type QueryLinksArgs = {
+  urls: Array<Scalars['String']['input']>;
 };
 
 
 export type QueryUserArgs = {
   _id: Scalars['String']['input'];
+};
+
+export type UpdateBookmarkInput = {
+  _id: Scalars['String']['input'];
+  links: Array<Scalars['String']['input']>;
 };
 
 export type User = {
@@ -73,6 +104,27 @@ export type CreateUserMutationVariables = Exact<{
 
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', _id: string, email: string } };
+
+export type UpdateBookmarkMutationVariables = Exact<{
+  updateBookmarkData: UpdateBookmarkInput;
+}>;
+
+
+export type UpdateBookmarkMutation = { __typename?: 'Mutation', updateBookmark: { __typename?: 'Bookmark', _id: string, name: string, userId: string, links: Array<string> } };
+
+export type BookmarkQueryVariables = Exact<{
+  _id: Scalars['String']['input'];
+}>;
+
+
+export type BookmarkQuery = { __typename?: 'Query', bookmark: { __typename?: 'Bookmark', _id: string, name: string, userId: string, links: Array<string> } };
+
+export type LinksQueryVariables = Exact<{
+  urls: Array<Scalars['String']['input']> | Scalars['String']['input'];
+}>;
+
+
+export type LinksQuery = { __typename?: 'Query', links: Array<{ __typename?: 'Link', siteName: string, title: string, images: Array<string>, url: string }> };
 
 export type BookmarksQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -100,6 +152,69 @@ export const CreateUserDocument = gql`
   })
   export class CreateUserGQL extends Apollo.Mutation<CreateUserMutation, CreateUserMutationVariables> {
     document = CreateUserDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateBookmarkDocument = gql`
+    mutation updateBookmark($updateBookmarkData: UpdateBookmarkInput!) {
+  updateBookmark(updateBookmarkData: $updateBookmarkData) {
+    _id
+    name
+    userId
+    links
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateBookmarkGQL extends Apollo.Mutation<UpdateBookmarkMutation, UpdateBookmarkMutationVariables> {
+    document = UpdateBookmarkDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const BookmarkDocument = gql`
+    query bookmark($_id: String!) {
+  bookmark(_id: $_id) {
+    _id
+    name
+    userId
+    links
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class BookmarkGQL extends Apollo.Query<BookmarkQuery, BookmarkQueryVariables> {
+    document = BookmarkDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const LinksDocument = gql`
+    query links($urls: [String!]!) {
+  links(urls: $urls) {
+    siteName
+    title
+    images
+    url
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class LinksGQL extends Apollo.Query<LinksQuery, LinksQueryVariables> {
+    document = LinksDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

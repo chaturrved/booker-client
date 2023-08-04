@@ -12,6 +12,8 @@ import { HttpLink } from 'apollo-angular/http'
 import { InMemoryCache } from '@apollo/client/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeModule } from './home/home.module';
+import { BookmarkModule } from './bookmarks/bookmark/bookmark.module';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent
@@ -25,7 +27,8 @@ import { HomeModule } from './home/home.module';
     SignUpModule,
     LoginModule,
     ApolloModule,
-    HomeModule
+    HomeModule,
+    BookmarkModule,
   ],
   providers: [
     {
