@@ -11,6 +11,7 @@ import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http'
 import { InMemoryCache } from '@apollo/client/core';
 import { HttpClientModule } from '@angular/common/http';
+import { HomeModule } from './home/home.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -23,7 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderModule,
     SignUpModule,
     LoginModule,
-    ApolloModule
+    ApolloModule,
+    HomeModule
   ],
   providers: [
     {
